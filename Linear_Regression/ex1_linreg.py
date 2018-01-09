@@ -99,15 +99,16 @@ def cost(theata, X, Y):
 if __name__ == "__main__":
     file_path = "../stanford_dl_ex-master/ex1/housing.data"
     train_X, test_X, train_Y, test_Y, m, n = load_data(file_path)
-    theta_sto, cost_sto = train_stochastic(train_X, train_Y, 0.000001, 100000)
-    theta_batch, cost_batch = train_batch(train_X, train_Y, 0.000001, 100000)
-    theta_tf, cost_tf = train_tf(train_X, train_Y, 0.000001, 100000)
-
-    # sk_theta = np.array(train_with_sklearn(train_X, train_Y)).T
+    # theta_sto, cost_sto = train_stochastic(train_X, train_Y, 0.000001, 100000)
+    # theta_batch, cost_batch = train_batch(train_X, train_Y, 0.000001, 100000)
+    # theta_tf, cost_tf = train_tf(train_X, train_Y, 0.000001, 100000)
     #
-    # loss1 = np.dot(test_X, sk_theta) - test_Y
-    cost_1 = cost(theta_sto, test_X, test_Y)
-    cost_2 = cost(theta_batch, test_X, test_Y)
-    cost_3 = cost(theta_tf, test_X, test_Y)
-    print(cost_1, cost_2, cost_3)
-    print(theta_sto, theta_batch, theta_tf)
+    sk_theta = np.array(train_with_sklearn(train_X, train_Y)).T
+    # #
+    # # loss1 = np.dot(test_X, sk_theta) - test_Y
+    # cost_1 = cost(theta_sto, test_X, test_Y)
+    # cost_2 = cost(theta_batch, test_X, test_Y)
+    # cost_3 = cost(theta_tf, test_X, test_Y)
+    cost_sk = cost(sk_theta, test_X, test_Y)
+    print(cost_sk)
+    print(sk_theta)
