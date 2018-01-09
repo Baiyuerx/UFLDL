@@ -1,6 +1,11 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
+
 import numpy as np
 import tensorflow as tf
 from sklearn.linear_model import LinearRegression
+import sys
+sys.path.append('..')
 
 
 def load_data(path):
@@ -92,9 +97,9 @@ def cost(theata, X, Y):
 
 
 if __name__ == "__main__":
-    file_path = "/home/selwb/Document/Machine_learning/UFLDL/stanford_dl_ex-master/ex1/housing.data"
+    file_path = "../stanford_dl_ex-master/ex1/housing.data"
     train_X, test_X, train_Y, test_Y, m, n = load_data(file_path)
-    theta_sto, cost_sto = train_tf(train_X, train_Y, 0.000001, 1000000)
+    theta_sto, cost_sto = train_tf(train_X, train_Y, 0.000001, 100000)
     # sk_theta = np.array(train_with_sklearn(train_X, train_Y)).T
     #
     # loss1 = np.dot(test_X, sk_theta) - test_Y
