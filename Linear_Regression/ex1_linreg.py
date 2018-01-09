@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 from sklearn.linear_model import LinearRegression
 
 
@@ -22,7 +23,7 @@ def train_with_sklearn(train_x, train_y):
     return linreg.coef_
 
 
-def train(train_x, train_y, alpha,epoch):
+def train_batch(train_x, train_y, alpha,epoch):
     m_, n_ = train_x.shape
     theta = np.zeros((n_, 1))
     cost_data = [cost(theta, train_x, train_y)]
@@ -53,6 +54,9 @@ def train_stochastic(train_x, train_y, alpha, epoch):
         if count % epoch == 0:
             return theta, cost_data
 
+
+def train_tf(train_x, train_y, alpha, epoch, Optimizer=tf.train.GradientDescentOptimizer):
+
 def cost(theata,X,Y):
     loss = np.dot(X, theata) - Y
     m = X.shape[0]
@@ -63,8 +67,9 @@ def cost(theata,X,Y):
 if __name__ == "__main__":
     file_path = "/home/selwb/Document/Machine_learning/UFLDL/stanford_dl_ex-master/ex1/housing.data"
     train_X, test_X, train_Y, test_Y, m, n = load_data(file_path)
-    theta ,cost_sto= train_stochastic(train_X, train_Y, 0.0001, 100000)
+    theta_sto, cost_sto= train_stochastic(train_X, train_Y, 0.0001, 1000)
     # sk_theta = np.array(train_with_sklearn(train_X, train_Y)).T
     #
     # loss1 = np.dot(test_X, sk_theta) - test_Y
-    # print(loss1)
+    print(theta_sto)
+    print(cost_sto)
