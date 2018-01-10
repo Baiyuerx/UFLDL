@@ -1,8 +1,9 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 import numpy as np
 import struct
 import gzip
+
 
 def load_minist_images(filepath):
     with gzip.open(filepath, 'rb') as f:
@@ -31,6 +32,7 @@ def load_minist_labels(filepath):
         offset = offset + struct.calcsize('>B')
         labels.append(list(label_value))
     return np.array(labels, dtype='uint8')
+
 
 if __name__ == '__main__':
     print(load_minist_images('E:\\Notes\\ufldl\\Data\\ex1\\train-images-idx3-ubyte.gz').shape)
