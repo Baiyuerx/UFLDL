@@ -46,7 +46,7 @@ def logistic_tf(train_x, train_y, epoch=1000, alpha=0.001):
     X = tf.placeholder(tf.float32, (None, train_x.shape[1]))
     Y = tf.placeholder(tf.float32, (None, 1))
 
-    W = tf.Variable(tf.zeros([train_x.shape[1],1]))
+    W = tf.Variable(tf.zeros([train_x.shape[1], 1]))
     b = tf.Variable(tf.zeros(1))
 
     predicted = tf.nn.sigmoid(tf.matmul(X, W) + b)
@@ -60,10 +60,8 @@ def logistic_tf(train_x, train_y, epoch=1000, alpha=0.001):
     with tf.Session() as sess:
         sess.run(init)
         for e in range(epoch):
-            _= sess.run([optimazer], feed_dict={X:train_x, Y:train_y} )
+            _ = sess.run([optimazer], feed_dict={X: train_x, Y: train_y})
         return W.eval(), b.eval()
-
-
 
 
 def logistic_sk(train_x, train_y):
