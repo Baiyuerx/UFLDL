@@ -18,14 +18,17 @@ def cost(theta, train_x, train_y):
 
 
 def logistic_gradient_batch(train_x, train_y, epoch=1000, alpha=0.001):
-    train_x = np.append(np.ones((train_x.shape[0], 1)), train_x, axis=1)
-    theta = np.zeros((train_x.shape[1], 1))
-    m = train_x.shape[0]
+    X = np.append(np.ones((train_x.shape[0], 1)), train_x, axis=1)
+    Y = train_y
+    theta = np.zeros((X.shape[1], 1))
+    m = X.shape[0]
+    cost_data = [cost(theta, train_x, train_y)]
 
     for i in range(epoch):
-        loss = train_y - sigmod(np.dot(train_x, theta))
-        theta = theta + 1.0 / m * alpha * np.dot(train_x.T, loss)
-    return theta
+        loss = Y - sigmod(np.dot(X, theta))
+        theta = theta + 1.0 / m * alpha * np.dot(X.T, loss)
+        cost_data.append(cost(theta, train_x, train_y))
+    return theta, cost_data
 
 
 def logistic_gradient_sto(train_x, train_y, epoch=1000, alpha=0.001):
@@ -39,25 +42,28 @@ def logistic_gradient_sto(train_x, train_y, epoch=1000, alpha=0.001):
     return theta
 
 
-def logistic_tf(train_x, train_y, epoch=1000, alpha=0.001, batch_size=100):
-    X = tf.placeholder(tf.float64, (None, train_x.shape[1]))
-    Y = tf.placeholder(tf.float64, (None, 2))
+def logistic_tf(train_x, train_y, epoch=1000, alpha=0.001):
+    X = tf.placeholder(tf.float32, (None, train_x.shape[1]))
+    Y = tf.placeholder(tf.float32, (None, 1))
 
-    W = tf.get_variable((784, 2), initializer=tf.constant_initializer())
-    b = tf.get_variable(10, initializer=tf.constant_initializer())
+    W = tf.Variable(tf.zeros([train_x.shape[1],1]))
+    b = tf.Variable(tf.zeros(1))
 
-    predicted = tf.nn.softmax(tf.matmul(X, W) + b)
+    predicted = tf.nn.sigmoid(tf.matmul(X, W) + b)
 
-    cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(predicted)), reduction_indices=1)
+    cost = -tf.reduce_mean(Y * tf.log(predicted) + (1 - Y) * tf.log(1.0 - predicted))
 
     optimazer = tf.train.GradientDescentOptimizer(alpha).minimize(cost)
 
     init = tf.global_variables_initializer()
 
-    with tf.Session as sess:
+    with tf.Session() as sess:
         sess.run(init)
         for e in range(epoch):
-            avg_cost = 0
+            _= sess.run([optimazer], feed_dict={X:train_x, Y:train_y} )
+        return W.eval(), b.eval()
+
+
 
 
 def logistic_sk(train_x, train_y):
