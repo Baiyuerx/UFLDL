@@ -17,6 +17,14 @@ def cost(theta, train_x, train_y):
     return cost / train_x.shape[0]
 
 
+def accuracy(theta, x, y):
+    x = np.append(np.ones((x.shape[0], 1)), x, axis=1)
+    A = sigmod(np.dot(x, theta))
+    predicted = (A > 0.5).astype(int)
+    correct = np.sum(predicted.reshape(-1,1) == y.reshape(-1,1))
+    return correct/len(y)
+
+
 def logistic_gradient_batch(train_x, train_y, epoch=1000, alpha=0.001):
     X = np.append(np.ones((train_x.shape[0], 1)), train_x, axis=1)
     Y = train_y
@@ -61,13 +69,13 @@ def logistic_tf(train_x, train_y, epoch=1000, alpha=0.001):
         sess.run(init)
         for e in range(epoch):
             _ = sess.run([optimazer], feed_dict={X: train_x, Y: train_y})
-        return W.eval(), b.eval()
+        return np.append(b.eval(), W.eval())
 
 
 def logistic_sk(train_x, train_y):
     lr = LogisticRegression(fit_intercept=True)
     lr.fit(train_x, train_y)
-    return (lr.coef_, lr.intercept_)
+    return np.append(lr.intercept_, np.array(lr.coef_).reshape((train_x.shape[1], 1)))
 
 
 if __name__ == '__main__':
