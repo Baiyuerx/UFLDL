@@ -1,2 +1,2 @@
 # ufldl
-My notes on standfor UFLDL tutorial.
+My notes and implementation on standfor UFLDL tutorial.
